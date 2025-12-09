@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ka">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rezidantura</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-theme="dark">
+    <!-- Home Window -->
+    <div class="window active" id="homeWindow">
+        <div class="header">
+            <h1>Rezidantura</h1>
+            <button class="dark-mode-btn" id="darkModeBtn">☀️</button>
+        </div>
+
+        <div class="parts-container">
+            <div class="parts-grid" id="partsGrid"></div>
+        </div>
+
+        <div class="controls-container">
+            <div class="toggle-container">
+                <label class="toggle-label">
+                    <span>100 sual limiti</span>
+                    <input type="checkbox" class="toggle-input" id="limitToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn secondary" id="selectAllBtn">Tüm partlar</button>
+                <button class="action-btn primary" id="startBtn" disabled>Testi başlat</button>
+            </div>
+
+            <div class="selection-info" id="selectionInfo">
+                Seçilmiş: <strong>0</strong> part, <strong>0</strong> Sual
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Window -->
+    <div class="window" id="testWindow">
+        <div class="test-header">
+            <div class="question-info" id="questionNumber">Question 1 of 100</div>
+            <button class="dark-mode-btn" id="darkModeBtnTest">☀️</button>
+        </div>
+
+        <div class="test-content">
+            <div id="questionText"></div>
+            <div id="answersContainer"></div>
+        </div>
+
+        <button class="next-btn" id="nextBtn">Next</button>
+    </div>
+
+    <!-- Results Window -->
+    <div class="window" id="resultsWindow">
+        <div class="results-content">
+            <h1 id="resultsTitle">Test bitdi!</h1>
+
+            <div class="results-stats">
+                <div class="stat-card correct">
+                    <div class="stat-number" id="correctCount">0</div>
+                    <div class="stat-label">Doğru</div>
+                </div>
+                <div class="stat-card incorrect">
+                    <div class="stat-number" id="incorrectCount">0</div>
+                    <div class="stat-label">Yanliş</div>
+                </div>
+                <div class="stat-card total">
+                    <div class="stat-number" id="totalCount">0</div>
+                    <div class="stat-label">Cemi</div>
+                </div>
+            </div>
+
+            <div class="results-actions">
+                <button class="action-btn secondary" id="reviewBtn">Cavablara bax</button>
+                <button class="action-btn primary" id="restartBtn">Başa dön</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Window -->
+    <div class="window" id="reviewWindow">
+        <div class="header">
+            <h1>Cevapları gözden geçir</h1>
+            <button class="action-btn secondary" id="backToResultsBtn">Geri</button>
+        </div>
+        <div class="review-list" id="reviewList"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
