@@ -4,7 +4,7 @@ const quizParts = {};
 
 const state = {
     selectedParts: new Set(),
-    limitTo100: false,
+    limit: 0,
     questions: [],
     currentIndex: 0,
     userAnswers: {}
@@ -18,7 +18,11 @@ const els = {
     partsGrid: document.getElementById('partsGrid'),
     selectAllBtn: document.getElementById('selectAllBtn'),
     startBtn: document.getElementById('startBtn'),
-    limitToggle: document.getElementById('limitToggle'),
+    limit100Toggle: document.getElementById('limit100Toggle'),
+    limit200Toggle: document.getElementById('limit200Toggle'),
+    limit500Toggle: document.getElementById('limit500Toggle'),
+    increaseLimitBtn: document.getElementById('increaseLimitBtn'),
+    decreaseLimitBtn: document.getElementById('decreaseLimitBtn'),
     selectionInfo: document.getElementById('selectionInfo'),
     darkModeBtn: document.getElementById('darkModeBtn'),
     darkModeBtnTest: document.getElementById('darkModeBtnTest'),
@@ -86,7 +90,7 @@ function updateUI() {
 
     let qCount = 0;
     state.selectedParts.forEach(num => qCount += quizParts[num]?.length || 0);
-    const displayCount = state.limitTo100 && qCount > 100 ? 100 : qCount;
+    const displayCount = state.limit > 0 && qCount > state.limit ? state.limit : qCount;
     els.selectionInfo.innerHTML = `seçilmiş: <strong>${state.selectedParts.size}</strong> part, <strong>${displayCount}</strong> sual`;
     els.startBtn.disabled = state.selectedParts.size === 0;
 }
@@ -113,8 +117,9 @@ function startQuiz() {
         (quizParts[num] || []).forEach(q => state.questions.push({ ...q }));
     });
     shuffle(state.questions);
-    if (state.limitTo100 && state.questions.length > 100) {
-        state.questions = state.questions.slice(0, 100);
+    shuffle(state.questions);
+    if (state.limit > 0 && state.questions.length > state.limit) {
+        state.questions = state.questions.slice(0, state.limit);
     }
     state.currentIndex = 0;
     state.userAnswers = {};
@@ -262,10 +267,33 @@ function showReview() {
 
 function restart() {
     state.selectedParts.clear();
-    state.limitTo100 = false;
-    els.limitToggle.checked = false;
+    setLimit(0);
     updateUI();
     showWindow('home');
+}
+
+function setLimit(val) {
+    state.limit = val;
+    els.limit100Toggle.checked = val === 100;
+    els.limit200Toggle.checked = val === 200;
+    els.limit500Toggle.checked = val === 500;
+    updateUI();
+}
+
+function adjustLimit(delta) {
+    let qCount = 0;
+    state.selectedParts.forEach(num => qCount += quizParts[num]?.length || 0);
+
+    const currentLimit = state.limit === 0 ? qCount : state.limit;
+    let newLimit = currentLimit + delta;
+
+    if (newLimit <= 0) {
+        newLimit = 0; // Represents "All"
+    } else if (newLimit >= qCount) {
+        newLimit = qCount;
+    }
+
+    setLimit(newLimit);
 }
 
 function toggleDarkMode() {
@@ -279,7 +307,14 @@ function toggleDarkMode() {
 function setupEvents() {
     els.selectAllBtn.onclick = toggleSelectAll;
     els.startBtn.onclick = startQuiz;
-    els.limitToggle.onchange = (e) => { state.limitTo100 = e.target.checked; updateUI(); };
+
+    els.limit100Toggle.onchange = (e) => setLimit(e.target.checked ? 100 : 0);
+    els.limit200Toggle.onchange = (e) => setLimit(e.target.checked ? 200 : 0);
+    els.limit500Toggle.onchange = (e) => setLimit(e.target.checked ? 500 : 0);
+
+    els.increaseLimitBtn.onclick = () => adjustLimit(50);
+    els.decreaseLimitBtn.onclick = () => adjustLimit(-50);
+
     els.darkModeBtn.onclick = toggleDarkMode;
     if (els.darkModeBtnTest) els.darkModeBtnTest.onclick = toggleDarkMode;
     els.nextBtn.onclick = nextQuestion;
