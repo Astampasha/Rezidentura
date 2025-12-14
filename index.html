@@ -23,10 +23,25 @@
         <div class="controls-container">
             <div class="toggle-container">
                 <label class="toggle-label">
-                    <span>100 sual limiti</span>
-                    <input type="checkbox" class="toggle-input" id="limitToggle">
+                    <span>100 sual</span>
+                    <input type="checkbox" class="toggle-input" id="limit100Toggle">
                     <span class="toggle-slider"></span>
                 </label>
+                <label class="toggle-label">
+                    <span>200 sual</span>
+                    <input type="checkbox" class="toggle-input" id="limit200Toggle">
+                    <span class="toggle-slider"></span>
+                </label>
+                <label class="toggle-label">
+                    <span>500 sual</span>
+                    <input type="checkbox" class="toggle-input" id="limit500Toggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <div class="limit-buttons" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button class="action-btn secondary" id="decreaseLimitBtn">-50</button>
+                <button class="action-btn secondary" id="increaseLimitBtn">+50</button>
             </div>
 
             <div class="action-buttons">
